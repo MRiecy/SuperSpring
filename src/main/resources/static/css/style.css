@@ -1,0 +1,115 @@
+/* 用户下拉菜单容器 */
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* 下拉菜单主体 */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #ffffff;
+    min-width: 50px;
+    width: max-content;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    z-index: 1;
+    padding: 4px 0;
+    margin-top: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+/* 添加一个透明的过渡区域 */
+.dropdown-content::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: transparent;
+}
+
+/* 鼠标悬停时显示菜单 */
+.user-dropdown:hover .dropdown-content {
+    display: block;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+/* 菜单项样式 */
+.dropdown-content a {
+    color: #495057;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+    transition: all 0.2s ease;
+    font-size: 13px;
+    text-align: right;
+    position: relative;
+    z-index: 2;
+}
+
+/* 菜单项悬停效果 */
+.dropdown-content a:hover {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+}
+
+/* 用户昵称样式 */
+.navbar-text {
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    color: #495057;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* 昵称悬停效果 */
+.navbar-text:hover {
+    background-color: #f8f9fa;
+}
+
+/* 菜单显示动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 用户状态控制 */
+.user-only {
+    display: none;
+}
+
+.guest-only {
+    display: flex;
+}
+
+/* 图标大小 */
+.icon-large {
+    font-size: 2rem;
+}
+
+/* 主内容区域样式 */
+.main-content {
+    padding: 2rem;
+    text-align: center;
+}
+
+/* 开始按钮样式 */
+.start-btn {
+    margin-top: 2rem;
+    padding: 1rem 3rem;
+    font-size: 1.5rem;
+} 
