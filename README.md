@@ -69,5 +69,3 @@ SuperSpring 是一个基于 Spring Boot 3、MyBatis-Plus、Thymeleaf 的全栈 W
 如有问题请联系项目维护者，或在代码中查阅注释。
 
 ---
-
-如需进一步定制 README 或补充其他内容，请告知！ 
