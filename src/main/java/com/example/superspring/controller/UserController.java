@@ -1,6 +1,8 @@
 package com.example.superspring.controller;
 
 import com.example.superspring.entity.User;
+import com.example.superspring.entity.AssessmentRecord;
+import com.example.superspring.mapper.AssessmentRecordMapper;
 import com.example.superspring.service.UserService;
 import com.example.superspring.dto.RegisterRequest;
 import com.example.superspring.dto.LoginRequest;
@@ -13,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
 
@@ -20,6 +23,7 @@ import jakarta.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDateTime;
 
 @Tag(name = "用户相关接口")
 @RestController
@@ -28,6 +32,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AssessmentRecordMapper assessmentRecordMapper;
 
     /**
      * 注册账号
@@ -67,9 +74,10 @@ public class UserController {
                             schema = @Schema(implementation = ApiResponse.class)))
         })
     @PostMapping("/login")
-    public ApiResponse<User> login(@RequestBody @Valid LoginRequest request) {
+    public ApiResponse<User> login(@RequestBody @Valid LoginRequest request, HttpSession session) {
         try {
             User user = userService.login(request.getNickname(), request.getPassword());
+            session.setAttribute("user", user);
             return ApiResponse.success(user);
         } catch (Exception e) {
             return ApiResponse.error(e.getMessage());
@@ -89,9 +97,10 @@ public class UserController {
                             schema = @Schema(implementation = ApiResponse.class)))
         })
     @PostMapping("/nickname")
-    public ApiResponse<User> updateNickname(@RequestBody @Valid UpdateNicknameRequest request) {
+    public ApiResponse<User> updateNickname(@RequestBody @Valid UpdateNicknameRequest request, HttpSession session) {
         try {
             User user = userService.updateNickname(request.getUserId(), request.getNewNickname());
+            session.setAttribute("user", user);
             return ApiResponse.success(user);
         } catch (Exception e) {
             return ApiResponse.error(e.getMessage());
@@ -142,6 +151,60 @@ public class UserController {
             return ApiResponse.success(user);
         } else {
             return ApiResponse.error("未登录");
+        }
+    }
+
+    /**
+     * 保存测评记录
+     */
+    @Operation(summary = "保存测评记录", description = "保存用户的测评记录")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "保存成功",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = AssessmentRecord.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "保存失败",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ApiResponse.class)))
+    })
+    @PostMapping("/assessment")
+    @CacheEvict(value = "rankingCache", key = "'ranking'")
+    public ApiResponse<AssessmentRecord> saveAssessment(@RequestBody AssessmentRecord record, HttpSession session) {
+        try {
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                return ApiResponse.error("请先登录");
+            }
+            record.setUserId(user.getId());
+            record.setCreateTime(LocalDateTime.now());
+            assessmentRecordMapper.insert(record);
+            return ApiResponse.success(record);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 获取用户历史记录
+     */
+    @Operation(summary = "获取历史记录", description = "获取用户的测评历史记录")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "获取成功",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            array = @ArraySchema(schema = @Schema(implementation = Map.class)))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "获取失败",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ApiResponse.class)))
+    })
+    @GetMapping("/history")
+    public ApiResponse<List<Map<String, Object>>> getHistory(HttpSession session) {
+        try {
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                return ApiResponse.error("请先登录");
+            }
+            return ApiResponse.success(assessmentRecordMapper.selectUserHistory(user.getId()));
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
         }
     }
 } 

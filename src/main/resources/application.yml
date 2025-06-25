@@ -13,7 +13,7 @@ spring:
       validation-timeout: 5000
       max-lifetime: 1200000
   thymeleaf:
-    cache: false
+    cache: true  # 生产环境设为true
     prefix: classpath:/templates/
     suffix: .html
     encoding: UTF-8
@@ -23,6 +23,11 @@ spring:
   web:
     resources:
       static-locations: classpath:/static/,classpath:/META-INF/resources/webjars/
+      cache:
+        period: 31536000
+        cachecontrol:
+          max-age: 30d
+          cache-public: true
   cache:
     type: simple
     cache-names: rankingCache
@@ -38,6 +43,11 @@ spring:
 
 server:
   port: 8080
+  address: 0.0.0.0
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/x-javascript,application/font-woff2
+    min-response-size: 1024
 
 mybatis-plus:
   configuration:

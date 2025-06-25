@@ -122,6 +122,12 @@
             <artifactId>bootstrap</artifactId>
             <version>5.3.0</version>
         </dependency>
+        <!-- Bootstrap Icons WebJar -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>bootstrap-icons</artifactId>
+            <version>1.11.1</version>
+        </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
@@ -156,6 +162,14 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-mysql</artifactId>
         </dependency>
+
+        <!-- MathJax WebJar -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>mathjax</artifactId>
+            <version>3.2.2</version>
+        </dependency>
+
     </dependencies>
 
     <!-- 项目构建配置 -->

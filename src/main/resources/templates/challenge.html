@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>闯关测评</title>
+    <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css}" rel="stylesheet" />
+    <link th:href="@{/css/challenge.css}" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="challenge-layout" class="d-flex flex-column min-vh-100 bg-light position-relative">
+      <div class="challenge-bg-math">
+        <div class="math-formula" data-top="18%" data-left="10%">\(\mathbb{P}(A|B) = \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)}\)</div>
+        <div class="math-formula" data-top="60%" data-left="70%">\(\det(A) = \prod_{i=1}^n \lambda_i\)</div>
+        <div class="math-formula" data-top="30%" data-left="60%">\(\int_0^{2\pi} \sin x\,dx = 0\)</div>
+        <div class="math-formula" data-top="60%" data-left="20%">\(\sum_{k=0}^n {n \choose k} = 2^n\)</div>
+      </div>
+      <!-- 顶部栏 -->
+      <header id="challenge-header" class="d-flex justify-content-center align-items-center py-2 px-3 challenge-header-beauty">
+        <div class="challenge-status d-flex align-items-center gap-3">
+          <span id="challenge-timer" class="text-secondary fw-semibold fs-5">用时：00:00</span>
+          <span id="challenge-score" class="fw-semibold fs-5">得分：0</span>
+        </div>
+      </header>
+      <!-- 中间栏 -->
+      <main id="challenge-main" class="flex-grow-1 d-flex flex-column align-items-start justify-content-start py-4">
+        <div id="challenge-question-area" class="w-100 px-4 pt-4 challenge-card">
+          <!-- 题目内容、答题控件动态渲染 -->
+        </div>
+        <hr class="my-4 w-100">
+        <div id="answer-explanation-area" class="alert alert-info d-none fs-6 w-100 mt-3 challenge-card challenge-explanation">
+          <!-- 答案解析/鼓励语/解题思路 -->
+        </div>
+      </main>
+      <!-- 底部栏：按钮区 -->
+      <div id="challenge-bottom-bar" class="d-flex justify-content-start gap-3 align-items-center px-4 py-2 challenge-bottom-bar-beauty">
+        <button id="submit-answer-btn" class="btn btn-challenge-main px-4">提交答案</button>
+        <button id="next-question-btn" class="btn btn-outline-secondary px-4 d-none">下一题</button>
+      </div>
+    </div>
+    <!-- 测评结束弹窗 -->
+    <div id="challenge-finish-modal" class="modal fade show d-none" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">测评结束</h2>
+          </div>
+          <div class="modal-body text-center">
+            <p class="fs-4">用时：<span id="final-time"></span></p>
+            <p class="fs-4">得分：<span id="final-score"></span></p>
+            <p class="fs-4">评级：<span id="final-rating"></span></p>
+            <div id="challenge-ranking" class="my-3"></div>
+            <button id="close-finish-modal-btn" class="btn btn-primary mt-2 btn-lg">返回首页</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/webjars/mathjax/3.2.2/es5/tex-mml-chtml.js}" onload="window.MathJax && MathJax.typesetPromise && MathJax.typesetPromise();"></script>
+    <script th:src="@{/js/challenge.js}"></script>
+    <script>
+    // 设置公式位置
+    document.querySelectorAll('.math-formula').forEach(el => {
+      el.style.setProperty('--top', el.getAttribute('data-top'));
+      el.style.setProperty('--left', el.getAttribute('data-left'));
+    });
+    // 数学公式动态漂移
+    document.addEventListener('mousemove', function(e) {
+      const formulas = document.querySelectorAll('.math-formula');
+      const { innerWidth, innerHeight } = window;
+      const xRatio = (e.clientX / innerWidth - 0.5) * 2;
+      const yRatio = (e.clientY / innerHeight - 0.5) * 2;
+      formulas.forEach((el, i) => {
+        const dx = 20 * (Math.sin(i + 1) * xRatio);
+        const dy = 20 * (Math.cos(i + 1) * yRatio);
+        el.style.transform = `translate(${dx}px, ${dy}px)`;
+      });
+    });
+    </script>
+  </body>
+</html>

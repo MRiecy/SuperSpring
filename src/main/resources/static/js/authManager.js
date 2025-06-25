@@ -52,15 +52,19 @@ const AuthManager = {
         for (let i = 0; i < retryCount; i++) {
             try {
                 const response = await fetch('/api/user/status');
+                console.log(`[登录状态检测] HTTP状态:`, response.status);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 
                 const result = await response.json();
+                console.log(`[登录状态检测] 响应内容:`, result);
                 // 检查响应格式
                 if (result.code === 0 && result.data) {
+                    console.log('[登录状态检测] 已登录，更新用户信息');
                     this.setLoginState(true, result.data);
                 } else {
+                    console.log('[登录状态检测] 未登录或数据无效，切换为游客');
                     this.setLoginState(false, null);
                 }
                 return;
@@ -86,7 +90,7 @@ const AuthManager = {
      */
     async performLogin(nickname, password) {
         try {
-            console.log('开始登录请求:', { nickname });
+            console.log('[登录请求] 开始登录请求:', { nickname });
             const response = await fetch('/api/user/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -94,7 +98,7 @@ const AuthManager = {
             });
             
             const result = await response.json();
-            console.log('登录响应:', result);
+            console.log('[登录请求] 登录响应:', result);
             
             if (result.code === 0 && result.data) {
                 this.setLoginState(true, result.data);
@@ -103,7 +107,7 @@ const AuthManager = {
                 throw new Error(result.message || '登录失败');
             }
         } catch (error) {
-            console.error('登录失败:', error);
+            console.error('[登录请求] 登录失败:', error);
             throw error;
         }
     },
@@ -130,13 +134,13 @@ const AuthManager = {
 
             const result = await response.json();
             if (result.code === 0) {
-                console.log('注册成功:', result.data);
+                console.log('[注册新用户] 注册成功:', result.data);
                 return result.data;
             } else {
                 throw new Error(result.message);
             }
         } catch (error) {
-            console.error('注册失败:', error);
+            console.error('[注册新用户] 注册失败:', error);
             throw error;
         }
     },
@@ -163,14 +167,15 @@ const AuthManager = {
 
             const result = await response.json();
             if (result.code === 0 && result.data) {
-                this.userInfo.nickname = newNickname;
+                this.userInfo = { ...this.userInfo, nickname: newNickname };
                 EventBus.publish('userInfoChanged', this.userInfo);
+                onsole.log('[修改昵称] 修改昵称成功:', result.data);
                 return true;
             } else {
                 throw new Error(result.message || '修改昵称失败');
             }
         } catch (error) {
-            console.error('修改昵称失败:', error);
+            console.error('[修改昵称] 修改昵称失败:', error);
             throw error;
         }
     },
@@ -212,11 +217,11 @@ const AuthManager = {
             JSON.stringify(this.userInfo) !== JSON.stringify(userInfo);
 
         if (!stateChanged) {
-            console.log('登录状态未发生变化，跳过更新');
+            console.log('[登录状态] 登录状态未发生变化，跳过更新');
             return;
         }
 
-        console.log('设置登录状态:', { isLoggedIn, userInfo });
+        console.log('[登录状态] 设置登录状态:', { isLoggedIn, userInfo });
         this.isLoggedIn = isLoggedIn;
         this.userInfo = userInfo;
 
@@ -225,7 +230,7 @@ const AuthManager = {
         if (userInfo) {
             EventBus.publish('userInfoChanged', userInfo);
         }
-        console.log('登录状态已更新，当前状态:', this.isLoggedIn);
+        console.log('[登录状态] 登录状态已更新，当前状态:', this.isLoggedIn);
     },
 
     /**

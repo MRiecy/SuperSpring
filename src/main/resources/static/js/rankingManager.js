@@ -1,4 +1,3 @@
-import EventBus from './eventBus.js';
 
 /**
  * 排行榜管理模块
@@ -106,12 +105,29 @@ const RankingManager = {
 
         tbody.innerHTML = data.map((item, index) => `
             <tr>
-                <td>${index + 1}</td>
+                <td>${this.getRankDisplay(index + 1)}</td>
                 <td>${item.nickname || '未知用户'}</td>
-                <td>${item.maxScore || item.score || 0}</td>
-                <td>${item.minTime || item.duration || 0}秒</td>
+                <td>${item.maxScore || 0}</td>
+                <td>${item.minTime || 0}秒</td>
             </tr>
         `).join('');
+    },
+
+    /**
+     * 获取排名显示
+     * @private
+     * @param {number} rank - 排名
+     * @returns {string} 排名显示HTML
+     */
+    getRankDisplay(rank) {
+        const medals = {
+            1: '<i class="bi bi-trophy-fill" title="第一名"></i>',
+            2: '<i class="bi bi-award-fill" title="第二名"></i>',
+            3: '<i class="bi bi-award-fill" title="第三名"></i>'
+        };
+        return medals[rank] 
+            ? `<span class="rank-medal rank-${rank}">${medals[rank]}${rank}</span>` 
+            : rank;
     },
 
     /**

@@ -7,15 +7,15 @@
     <!-- Bootstrap CSS -->
     <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet">
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link th:href="@{/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css}" rel="stylesheet">
     <!-- 自定义样式 -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<body class="bg-light">
+    <nav class="navbar">
         <div class="container">
-            <a class="navbar-brand" href="#">数学注意力测评</a>
-            <a class="btn btn-outline-primary me-3" href="#" data-bs-toggle="modal" data-bs-target="#rankingModal">排行榜</a>
+            <a class="navbar-brand fw-bold fs-3"><i class="bi bi-calculator"></i> 数学注意力测评</a>
+            <a class="btn btn-outline-primary me-3" data-bs-toggle="modal" data-bs-target="#rankingModal">排行榜</a>
             <div class="ms-auto d-flex align-items-center">
                 <!-- 游客状态 -->
                 <div class="guest-only">
@@ -35,11 +35,62 @@
         </div>
     </nav>
 
-    <div class="main-content">
-        <h1 class="display-4 mb-4">欢迎来到数学注意力测评</h1>
-        <p class="lead">通过有趣的数学题目，测试你的注意力水平！</p>
-        <button class="btn btn-primary start-btn" data-bs-toggle="modal" data-bs-target="#startModal">开始测评</button>
-    </div>
+    <!-- 主视觉区 -->
+    <section class="hero-section d-flex flex-column align-items-center justify-content-center text-center position-relative">
+        <div class="hero-bg-math">
+          <div class="math-formula" data-top="10%" data-left="5%">\(e^x = 1 + x + \frac{x^2}{2!} + \cdots + \frac{x^n}{n!} + \cdots\)</div>
+          <div class="math-formula" data-top="30%" data-left="60%">\(\lim_{n\to\infty} (1+\frac{1}{n})^n = e\)</div>
+          <div class="math-formula" data-top="75%" data-left="25%">\(\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}\)</div>
+          <div class="math-formula" data-top="70%" data-left="70%">\(f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x-a)^n\)</div>
+          <div class="math-formula" data-top="15%" data-left="50%">\(e^{i\pi} + 1 = 0\)</div>
+          <div class="math-formula" data-top="50%" data-left="45%">\(\iint\limits_{D} f(x, y)\,dx\,dy\)</div>
+          <div class="math-formula" data-top="80%" data-left="50%">\(\frac{\partial^2 u}{\partial t^2} = c^2 \nabla^2 u\)</div>
+          <div class="math-formula" data-top="45%" data-left="10%">\(\oint_{\partial S} \vec{F} \cdot d\vec{r} = \iint_{S} (\nabla \times \vec{F}) \cdot d\vec{S}\)</div>
+        </div>
+        <h1 class="hero-title mb-3">欢迎来到数学注意力测评</h1>
+        <p class="hero-subtitle mb-4">通过有趣的数学题目，测试你的专注力与思维敏捷度！</p>
+        <button class="btn btn-lg btn-main-cta px-5 py-3 mb-4 start-btn" data-bs-toggle="modal" data-bs-target="#startModal">开始测评</button>
+    </section>
+
+    <!-- 亮点介绍区 -->
+    <section class="features-section container my-5 position-relative">
+      <div class="features-bg-math">
+        <div class="math-formula" data-top="0%" data-left="0%">\(\nabla \cdot \vec{E} = \frac{\rho}{\varepsilon_0}\)</div>
+        <div class="math-formula" data-top="5%" data-left="90%">\(\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}\)</div>
+        <div class="math-formula" data-top="90%" data-left="85%">\(\left|\begin{matrix}a & b \\ c & d\end{matrix}\right| = ad-bc\)</div>
+        <div class="math-formula" data-top="90%" data-left="5%">\(\frac{d}{dt}\left(\int_{a(t)}^{b(t)} f(x,t)dx\right) = f(b(t),t) b'(t) - f(a(t),t) a'(t) + \int_{a(t)}^{b(t)} \frac{\partial f}{\partial t} dx\)</div>
+      </div>
+        <div class="row g-4 justify-content-center">
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="feature-card text-center p-4 h-100">
+                    <div class="feature-icon mb-3"><i class="bi bi-collection-play fs-1 text-primary"></i></div>
+                    <h5 class="feature-title mb-2">题型丰富</h5>
+                    <p class="feature-desc">涵盖积分、生成函数、群论等多种题型，全面考察注意力。</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="feature-card text-center p-4 h-100">
+                    <div class="feature-icon mb-3"><i class="bi bi-bar-chart-line fs-1 text-success"></i></div>
+                    <h5 class="feature-title mb-2">实时排行榜</h5>
+                    <p class="feature-desc">与全世界用户同台竞技，实时刷新排名。</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="feature-card text-center p-4 h-100">
+                    <div class="feature-icon mb-3"><i class="bi bi-clock-history fs-1 text-warning"></i></div>
+                    <h5 class="feature-title mb-2">历史记录</h5>
+                    <p class="feature-desc">自动保存测评历史，见证你的进步。</p>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="feature-card text-center p-4 h-100">
+                    <div class="feature-icon mb-3"><i class="bi bi-braces fs-1 text-info"></i></div>
+                    <h5 class="feature-title mb-2">公式美观渲染</h5>
+                    <p class="feature-desc">支持LaTeX公式，体验专业级数学排版。</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- 注册模态框 -->
     <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel">
@@ -55,7 +106,7 @@
                             <label for="registerNickname" class="form-label">昵称</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-person-plus"></i></span>
-                                <input type="text" class="form-control" id="registerNickname" placeholder="请设置您的昵称" required>
+                                <input type="text" class="form-control" id="registerNickname" placeholder="请设置您的昵称" required autocomplete="username">
                             </div>
                             <!-- <div class="form-text">昵称将作为您的唯一标识</div> -->
                         </div>
@@ -63,7 +114,7 @@
                             <label for="registerPassword" class="form-label">密码</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                <input type="password" class="form-control" id="registerPassword" placeholder="请设置您的密码" required>
+                                <input type="password" class="form-control" id="registerPassword" placeholder="请设置您的密码" required autocomplete="new-password">
                             </div>
                             <div class="form-text">建议使用字母、数字和符号的组合</div>
                         </div>
@@ -71,7 +122,7 @@
                             <label for="confirmPassword" class="form-label">确认密码</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                                <input type="password" class="form-control" id="confirmPassword" placeholder="请再次输入密码" required>
+                                <input type="password" class="form-control" id="confirmPassword" placeholder="请再次输入密码" required autocomplete="new-password">
                             </div>
                             <!-- <div class="form-text">请再次输入密码以确认</div> -->
                         </div>
@@ -106,7 +157,7 @@
                             <label for="loginNickname" class="form-label">昵称</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-person"></i></span>
-                                <input type="text" class="form-control" id="loginNickname" placeholder="请输入您的昵称" required>
+                                <input type="text" class="form-control" id="loginNickname" placeholder="请输入您的昵称" required autocomplete="username">
                             </div>
                             <!-- <div class="form-text">请输入您使用的昵称</div> -->
                         </div>
@@ -114,7 +165,7 @@
                             <label for="loginPassword" class="form-label">密码</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                <input type="password" class="form-control" id="loginPassword" placeholder="请输入您的密码" required>
+                                <input type="password" class="form-control" id="loginPassword" placeholder="请输入您的密码" required autocomplete="current-password">
                             </div>
                             <!-- <div class="form-text">请输入您的登录密码</div> -->
                         </div>
@@ -136,46 +187,58 @@
     </div>
 
     <!-- 历史记录模态框 -->
-    <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="historyModalLabel">历史记录</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭" tabindex="0"></button>
+                <div class="modal-header border-0 pb-0">
+                    <div class="modal-title-wrapper">
+                        <h5 class="modal-title" id="historyModalLabel">
+                            <i class="bi bi-clock-history text-primary me-2"></i>历史记录
+                        </h5>
+                        <small class="text-muted d-block mt-1">展示最近20次测评记录</small>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭"></button>
                 </div>
-                <div class="modal-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>测评时间</th>
-                                <th>得分</th>
-                                <th>用时</th>
-                            </tr>
-                        </thead>
-                        <tbody id="historyTableBody">
-                        </tbody>
-                    </table>
+                <div class="modal-body pt-3">
+                    <div class="history-table-container">
+                        <table class="table align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th><i class="bi bi-calendar3 me-1"></i>测评时间</th>
+                                    <th><i class="bi bi-star-fill me-1 text-warning"></i>得分</th>
+                                    <th><i class="bi bi-stopwatch me-1"></i>用时</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- 排行榜模态框 -->
-    <div class="modal fade" id="rankingModal" tabindex="-1" aria-labelledby="rankingModalLabel">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade" id="rankingModal" tabindex="-1" aria-labelledby="rankingModalLabel" data-bs-backdrop="static">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="rankingModalLabel">排行榜</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭" tabindex="0"></button>
+                <div class="modal-header border-0 pb-0">
+                    <div class="modal-title-wrapper">
+                        <h5 class="modal-title" id="rankingModalLabel">
+                            <i class="bi bi-trophy text-warning me-2"></i>排行榜
+                        </h5>
+                        <small class="text-muted d-block mt-1">展示所有用户的最高分</small>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭"></button>
                 </div>
-                <div class="modal-body">
-                    <table class="table">
-                        <thead>
+                <div class="modal-body pt-3">
+                    <table class="table align-middle">
+                        <thead class="table-light">
                             <tr>
-                                <th>排名</th>
-                                <th>用户</th>
-                                <th>最高分</th>
-                                <th>用时</th>
+                                <th><i class="bi bi-hash me-1"></i>排名</th>
+                                <th><i class="bi bi-person me-1"></i>用户</th>
+                                <th><i class="bi bi-award me-1 text-warning"></i>最高分</th>
+                                <th><i class="bi bi-stopwatch me-1"></i>用时</th>
                             </tr>
                         </thead>
                         <tbody id="rankingTableBody">
@@ -222,7 +285,11 @@
                         准备好开始挑战了吗？点击下方按钮开始测评！
                     </div>
                 </div>
-                <div class="modal-footer border-0">
+                <div class="modal-footer border-0 d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-outline-secondary me-auto" id="startAdvancedChallengeBtn">
+                        <i class="bi bi-gem me-1"></i>
+                        高级挑战 (Demo)
+                    </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                     <button type="button" class="btn btn-primary px-4" id="startAssessmentBtn">
                         <i class="bi bi-play-fill me-1"></i>
@@ -265,6 +332,8 @@
 
     <!-- Bootstrap JS -->
     <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+    <!-- MathJax -->
+    <script th:src="@{/webjars/mathjax/3.2.2/es5/tex-mml-chtml.js}" onload="window.MathJax && MathJax.typesetPromise && MathJax.typesetPromise();"></script>
     <!-- 自定义脚本 -->
     <script type="module">
         import AuthManager from '/js/authManager.js';
@@ -315,6 +384,41 @@
         window.addEventListener('unload', () => {
             EventBus.cleanup();
         });
+    </script>
+    <script>
+    // 设置公式位置
+    document.querySelectorAll('.math-formula').forEach(el => {
+      el.style.setProperty('--top', el.getAttribute('data-top'));
+      el.style.setProperty('--left', el.getAttribute('data-left'));
+    });
+    // 数学公式动态漂移
+    document.addEventListener('mousemove', function(e) {
+      const formulas = document.querySelectorAll('.math-formula');
+      const { innerWidth, innerHeight } = window;
+      const xRatio = (e.clientX / innerWidth - 0.5) * 2; // -1 ~ 1
+      const yRatio = (e.clientY / innerHeight - 0.5) * 2;
+      formulas.forEach((el, i) => {
+        const dx = 20 * (Math.sin(i + 1) * xRatio);
+        const dy = 20 * (Math.cos(i + 1) * yRatio);
+        el.style.transform = `translate(${dx}px, ${dy}px)`;
+      });
+    });
+    // 确保 MathJax 加载后再渲染公式
+    window.addEventListener('DOMContentLoaded', function() {
+      function renderMath() {
+        if (window.MathJax && MathJax.typesetPromise) {
+          MathJax.typesetPromise();
+        }
+      }
+      if (window.MathJax) {
+        renderMath();
+      } else {
+        const mjScript = document.querySelector('script[src*="mathjax"]');
+        if (mjScript) {
+          mjScript.addEventListener('load', renderMath);
+        }
+      }
+    });
     </script>
 </body>
 </html> 

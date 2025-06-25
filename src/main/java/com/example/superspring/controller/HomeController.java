@@ -22,4 +22,14 @@ public class HomeController {
         // 返回名为 "index" 的视图
         return "index";
     }
+
+    @GetMapping("/challenge")
+    public String challenge() {
+        return "challenge";
+    }
+
+    @GetMapping("/challenge/advanced")
+    public String advancedChallenge() {
+        return "advanced-challenge";
+    }
 } 

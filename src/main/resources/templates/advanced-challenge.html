@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>高级挑战</title>
+    <link th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/webjars/bootstrap-icons/1.11.1/font/bootstrap-icons.css}" rel="stylesheet" />
+    <link th:href="@{/css/challenge.css}" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="challenge-layout" class="d-flex flex-column min-vh-100 position-relative">
+       <div class="challenge-bg-math">
+        <div class="math-formula" style="--top: 10%; --left: 10%;">\(\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}\)</div>
+        <div class="math-formula" style="--top: 20%; --left: 80%;">\(e^{i\pi} + 1 = 0\)</div>
+        <div class="math-formula" style="--top: 75%; --left: 70%;">\(\nabla \cdot \mathbf{E} = \frac{\rho}{\varepsilon_0}\)</div>
+        <div class="math-formula" style="--top: 85%; --left: 15%;">\(\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}\)</div>
+        <div class="math-formula" style="--top: 45%; --left: 45%;">\(L(x) = \sum_{j=0}^{k} y_j \ell_j(x)\)</div>
+        <div class="math-formula" style="--top: 50%; --left: 85%;">\(\hat{f}(\xi) = \int_{-\infty}^{\infty} f(x)\ e^{-2\pi i x \xi}\ dx\)</div>
+        <div class="math-formula" style="--top: 70%; --left: 5%;">\(i\hbar\frac{\partial}{\partial t}\Psi = \hat{H}\Psi\)</div>
+        <div class="math-formula" style="--top: 30%; --left: 20%;">\(\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla) \mathbf{u} = -\frac{1}{\rho} \nabla p + \nu \nabla^2 \mathbf{u}\)</div>
+      </div>
+      <!-- 顶部栏 -->
+      <header id="challenge-header" class="d-flex justify-content-between align-items-center py-2 px-3 challenge-header-beauty">
+        <h5 class="mb-0 fw-semibold">
+            <i class="bi bi-gem me-2"></i>高级挑战
+        </h5>
+        <div>
+            <span class="badge bg-warning text-dark me-2">Demo</span>
+            <a href="/" class="btn btn-outline-secondary btn-sm">返回首页</a>
+        </div>
+      </header>
+      <!-- 中间栏 -->
+      <main id="challenge-main" class="flex-grow-1 d-flex flex-column align-items-center justify-content-start py-4">
+        <div id="advanced-question-area" class="w-100 challenge-card">
+          <!-- 高级挑战题目动态渲染 -->
+          <div id="question-content">
+            <!-- 题目文本、数列等将在这里渲染 -->
+          </div>
+
+          <div id="answer-input-area" class="mt-4">
+            <!-- 答案输入框 -->
+            <label for="answer-input" class="form-label">你的答案：</label>
+            <input type="text" id="answer-input" class="form-control" placeholder="请输入计算结果">
+          </div>
+
+          <hr class="my-4 w-100">
+
+          <div id="answer-explanation-area" class="alert alert-info d-none fs-6 w-100">
+            <!-- 答案解析/鼓励语/解题思路 -->
+          </div>
+        </div>
+      </main>
+      <!-- 底部栏：按钮区 -->
+      <div id="challenge-bottom-bar" class="d-flex justify-content-center gap-3 align-items-center px-4 py-2 challenge-bottom-bar-beauty">
+        <button id="submit-answer-btn" class="btn btn-challenge-main px-4">提交答案</button>
+        <button id="next-question-btn" class="btn btn-outline-secondary px-4">换一题</button>
+      </div>
+    </div>
+    <script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/webjars/mathjax/3.2.2/es5/tex-mml-chtml.js}"></script>
+    <script type="module" th:src="@{/js/advanced-challenge.js}"></script>
+     <script>
+    // Set formula positions via CSS variables
+    document.querySelectorAll('.math-formula').forEach(el => {
+        // The position is now set directly in the style attribute,
+        // but this script could be used for more dynamic positioning if needed.
+    });
+    
+    // Ensure MathJax renders formulas on load
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise();
+      }
+    });
+    </script>
+  </body>
+</html> 

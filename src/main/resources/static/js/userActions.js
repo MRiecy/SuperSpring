@@ -1,5 +1,4 @@
 import AuthManager from './authManager.js';
-import UIManager from './uiManager.js';
 
 /**
  * 用户操作管理模块
@@ -23,6 +22,12 @@ class UserActions {
         
         // 绑定事件处理器
         this.bindEvents();
+        
+        // 绑定历史记录模态框显示事件
+        const historyModal = document.getElementById('historyModal');
+        if (historyModal) {
+            historyModal.addEventListener('show.bs.modal', () => this.updateHistory());
+        }
         
         this.initialized = true;
         console.log('UserActions初始化完成');
@@ -49,6 +54,7 @@ class UserActions {
 
         // 开始测评按钮事件
         const startAssessmentBtn = document.getElementById('startAssessmentBtn');
+        const startAdvancedChallengeBtn = document.getElementById('startAdvancedChallengeBtn');
 
         // 绑定输入事件
         if (registerNickname) {
@@ -94,6 +100,12 @@ class UserActions {
 
         if (startAssessmentBtn) {
             startAssessmentBtn.addEventListener('click', () => this.handleStartAssessment());
+        }
+
+        if (startAdvancedChallengeBtn) {
+            startAdvancedChallengeBtn.addEventListener('click', () => {
+                window.location.href = '/challenge/advanced';
+            });
         }
     }
 
@@ -232,16 +244,23 @@ class UserActions {
         }
     }
 
-    // 处理开始测评
+    /**
+     * 处理开始测评的操作
+     * 首先检查用户的登录状态，如果未登录则提示用户登录并显示登录模态框
+     * 若已登录则关闭开始测评模态框并跳转到测评页面
+     */
     async handleStartAssessment() {
         try {
             // 检查登录状态
             if (!AuthManager.isLoggedIn) {
-                // 如果未登录，显示登录模态框
+                // 如果未登录，显示提示信息
                 alert('请先登录');
+                // 获取开始测评模态框实例
                 const startModal = bootstrap.Modal.getInstance(document.getElementById('startModal'));
+                // 若开始测评模态框存在，则隐藏该模态框
                 if (startModal) startModal.hide();
                 
+                // 创建登录模态框实例
                 const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
                 loginModal.show();
                 return;
@@ -254,10 +273,51 @@ class UserActions {
             }
 
             // TODO: 跳转到测评页面
-            window.location.href = '/assessment';
+            window.location.href = '/challenge';
         } catch (error) {
             console.error('开始测评失败:', error);
             alert('开始测评失败，请稍后重试');
+        }
+    }
+
+    /**
+     * 更新历史记录表格
+     */
+    async updateHistory() {
+        const tbody = document.getElementById('historyTableBody');
+        if (!tbody) return;
+
+        if (!AuthManager.isUserLoggedIn()) {
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center">请先登录</td></tr>';
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/user/history');
+            if (!response.ok) {
+                throw new Error('获取历史记录失败');
+            }
+
+            const result = await response.json();
+            if (result.code === 0 && result.data) {
+                if (result.data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3" class="text-center">暂无历史记录</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = result.data.map(record => `
+                    <tr>
+                        <td>${new Date(record.createTime).toLocaleString()}</td>
+                        <td>${record.score}分</td>
+                        <td>${record.timeUsed}秒</td>
+                    </tr>
+                `).join('');
+            } else {
+                throw new Error(result.message || '获取历史记录失败');
+            }
+        } catch (error) {
+            console.error('[历史记录] 获取历史记录失败:', error);
+            tbody.innerHTML = '<tr><td colspan="3" class="text-center">获取历史记录失败</td></tr>';
         }
     }
 }
